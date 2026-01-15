@@ -1,0 +1,32 @@
+name: youzack-infra
+services:
+  # SQL Server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourPassword123!
+    ports:
+      - "1433:1433"
+      
+  # Redis
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
+  # RabbitMQ (带管理界面)
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672" # 浏览器访问：http://localhost:15672
+    
+  # ElasticSearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # 限制内存
+    ports:
+      - "9200:9200"
